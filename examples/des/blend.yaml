@@ -31,12 +31,11 @@ modules:
     # to show how that can work.  But if you don't have it, it has its own implementation
     # as well (since it's pretty simple).
     - log_normal
-
-
+    
 psf:
     # Simple Moffat PSF
     type: Moffat
-    fwhm: 0.9
+    fwhm: 0.5
     beta: 3.0   # Typical beta values are between 2.5 and 4 according to this paper:
                 # http://adsabs.harvard.edu/abs/1993MNRAS.264..961S
 
@@ -59,7 +58,7 @@ gal:
 
     flux:
         type: LogNormal
-        mean: 1000.
+        mean: 2000.
         sigma: 500.
 
 stamp:
@@ -96,18 +95,18 @@ image:
 
     pixel_scale : 0.26
 
-    random_seed: 8675309   # Jenny
+    random_seed: 1006
 
     # Poisson noise with whitening.
     noise:
         type: Poisson
-        sky_level: 100
+        sky_level: 30
 
 output:
     type: Fits
 
-    dir: output
-    file_name: "blend.fits"
+    dir: output/galsim_fri_dataset_fits
+    file_name: "blended_%03d.fits"
 
     deblend:
         # This is a custom extra output field to write a second file that is identical
@@ -116,5 +115,5 @@ output:
         # final image that includes all the noise.  So the Poisson noise of the neighbors
         # is still there.  Just not any of the flux from the neighbors.
         # This represents the result of a perfect deblender.
-        file_name: "deblend.fits"
+        file_name: "deblend_%03d.fits"
 

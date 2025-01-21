@@ -105,7 +105,7 @@ class BlendBuilder(galsim.config.StampBuilder):
                                     add_to_image=True)
 
         # Save this in base for the deblend output
-        base['blend_neighbor_image'] = self.neighbor_image
+         base['blend_neighbor_image'] = self.neighbor_image
 
         image += self.neighbor_image
 

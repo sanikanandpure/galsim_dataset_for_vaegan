@@ -1,0 +1,36 @@
+gal:
+  ellip:
+    eta1:
+      sigma: 0.2
+      type: RandomGaussian
+    eta2:
+      sigma: 0.2
+      type: RandomGaussian
+    type: Eta1Eta2
+  flux:
+    mean: 2000.0
+    sigma: 500.0
+    type: LogNormal
+  half_light_radius:
+    mean: 1.2
+    sigma: 0.4
+    type: LogNormal
+  type: Exponential
+image:
+  noise:
+    sky_level: 30
+    type: Poisson
+  nx_tiles: 10
+  ny_tiles: 10
+  pixel_scale: 0.26
+  random_seed: 1349
+  stamp_size: 64
+  type: Tiled
+modules:
+- blend
+- log_normal
+output:
+  deblend:
+    file_name: deblend_350.fits
+  dir: output/galsim_fri_dataset_fits
+  file_name: 

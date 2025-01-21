@@ -1,0 +1,74 @@
+# Modified blend.yaml for a simulation of a single galaxy or minimal blending.
+
+modules:
+    # Keep the same custom modules for blending and log-normal distribution
+    - blend
+    - log_normal
+
+psf:
+    # Using Moffat PSF, but with smaller FWHM for sharper images
+    type: Moffat
+    fwhm: 0.3    # Reduced FWHM for sharper point spread function (was 0.5)
+    beta: 3.0    # Keep the same beta value
+    index_key: file_num  # The PSF changes per output file
+
+gal:
+    # Simple Exponential galaxy (no changes here)
+    type: Exponential
+    half_light_radius:
+        type: LogNormal
+        mean: 1.0    # Reduced size of galaxy for sharper appearance (was 1.2)
+        sigma: 0.3   # Reduced sigma to limit variation in galaxy size (was 0.4)
+
+    ellip:
+        type: Eta1Eta2
+        eta1: { type: RandomGaussian, sigma: 0.15 }  # Less ellipticity for a more regular shape
+        eta2: { type: RandomGaussian, sigma: 0.15 }
+
+    flux:
+        type: LogNormal
+        mean: 1500.   # Reduced flux for more realistic brightness (was 2000)
+        sigma: 400.   # Adjusted sigma to control variation (was 500)
+
+stamp:
+    # Custom stamp type for blending. To simulate fewer neighbors or no neighbors:
+    type: Blend
+
+    # Reduced number of neighbors for less blending or set to 0 for single galaxies.
+    n_neighbors:
+        type: RandomBinomial
+        N: 2  # Reduce max number of neighbors from 5 to 2
+        p: 0.2  # Lower probability of neighbors (was 0.3)
+
+    # Adjust the separation ranges for galaxies
+    min_sep: 3   # Increase minimum separation to reduce overlapping (was 2)
+    max_sep: 8   # Reduce maximum separation to keep galaxies close enough (was 10)
+
+    offset:
+        type: XY
+        x: { type: Random, min: -0.5, max: 0.5 }
+        y: { type: Random, min: -0.5, max: 0.5 }
+
+image:
+    type: Tiled
+    stamp_size: 64
+    nx_tiles: 10  # Keep the same grid of images
+    ny_tiles: 10
+
+    pixel_scale: 0.26  # No change here
+
+    random_seed: 8675309  # Reproducible random seed
+
+    # Adjusted Poisson noise to reduce overall noise level in the image
+    noise:
+        type: Poisson
+        sky_level: 10  # Reduced sky level to lower noise (was 30)
+
+output:
+    type: Fits
+    dir: output
+    file_name: "modified_blend.fits"  # Change output file name
+
+    deblend:
+        # Keep the same deblending functionality for comparison
+        file_name: "modified_deblend.fits"
